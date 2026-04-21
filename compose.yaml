@@ -1,0 +1,21 @@
+services:
+  tayga:
+#    build: .
+    image: link-to-your-docker-image-hosted
+    container_name: nat64_tayga
+    restart: always
+    logging:
+      driver: journald
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/net/tun
+    network_mode: host
+    volumes:
+      - ${PERSISTENT_VOLUME}nat64/tayga-db:/var/db/tayga
+    environment:
+      NAT64_IPV6_ADDR: ${NAT64_IPV6_ADDR}
+      NAT64_IPV4_GW: ${NAT64_IPV4_GW}
+      NAT64_IPV4_POOL: ${NAT64_IPV4_POOL}
+      RADVD_LAN_IFACE: ${RADVD_LAN_IFACE:-eth0}
